@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: navy; /* Changed background color to navy blue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .option {
+            margin: 20px;
+            padding: 15px 30px; /* Made buttons bigger */
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px; /* Increased font size */
+            display: inline-block; /* Ensure buttons are inline */
+        }
+        .option:hover {
+            background-color: #0056b3;
+        }
+        .input-section {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .input-section div {
+            margin-bottom: 10px;
+        }
+        .floating-message {
+            display: none;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PINCHAINFX</h1>
+        <p>Select an option below:</p>
+        
+
+        <div id="paymentSection">
+            <button id="paymentButton" class="option">Add withdrawal Method</button>
+            <div class="floating-message">Pay with Cash App or Bitcoin</div>
+            <div id="paymentInputSection" class="input-section">
+                <div>
+                    <img src="cashapp.png" alt="Cash App Logo" style="width: 20px; height: 20px; vertical-align: middle;">
+                    <input type="text" id="cashAppTag" placeholder="Enter Cash App Tag">
+                </div>
+                <div>
+                    <img src="bitcoin.png" alt="Bitcoin Logo" style="width: 20px; height: 20px; vertical-align: middle;">
+                    <input type="text" id="bitcoinAddress" placeholder="Enter Bitcoin Address">
+                </div>
+                <button id="submitPaymentButton" class="option">Submit withdrawal Details</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const paymentButton = document.getElementById('paymentButton');
+        const paymentInputSection = document.getElementById('paymentInputSection');
+        const submitPaymentButton = document.getElementById('submitPaymentButton');
+
+        // Show payment input fields when payment button is clicked
+        paymentButton.addEventListener('click', () => {
+            paymentInputSection.style.display = 'block';
+        });
+
+        // Handle submission of payment details
+        submitPaymentButton.addEventListener('click', () => {
+            const cashAppTag = document.getElementById('cashAppTag').value;
+            const bitcoinAddress = document.getElementById('bitcoinAddress').value;
+
+            if (cashAppTag || bitcoinAddress) {
+                alert(`Payment details submitted!\nCash App Tag: ${cashAppTag}\nBitcoin Address: ${bitcoinAddress}`);
+            } else {
+                alert('Please enter at least one payment method.');
+            }
+        });
+    </script>
+</body>
+</html>

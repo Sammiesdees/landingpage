@@ -15,13 +15,24 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f9;
+            background-color: navy;
+            background-image: radial-gradient(circle, rgba(0,0,128,0.2) 20%, transparent 20%),
+                              radial-gradient(circle, rgba(0,0,128,0.2) 20%, transparent 20%);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
         }
 
         h1 {
             color: #333;
         }
 
+        
+        h2 {
+            color: #fff;
+            margin: 10px 0;
+        }
+        
+         
         button {
             margin: 10px;
             padding: 10px 20px;
@@ -71,27 +82,14 @@
 </head>
 <body>
     <h1 id="greeting">HELLO WELCOME</h1>
+     <h2>WELCOME TO PINCHAINX</h2>
 
     <div id="passwordSection">
         <input type="password" id="passwordInput" placeholder="Enter your password">
         <button id="passwordButton">Submit Password</button>
     </div>
 
-    <div id="paymentSection" class="hidden">
-        <button id="paymentButton">Add Payment Method</button>
-        <div class="floating-message">Pay with Cash App or Bitcoin</div>
-        <div id="paymentInputSection" class="hidden input-section">
-            <div>
-                <img src="cashapp.png" alt="Cash App Logo" style="width: 20px; height: 20px; vertical-align: middle;">
-                <input type="text" id="cashAppTag" placeholder="Enter Cash App Tag">
-            </div>
-            <div>
-                <img src="bitcoin.png" alt="Bitcoin Logo" style="width: 20px; height: 20px; vertical-align: middle;">
-                <input type="text" id="bitcoinAddress" placeholder="Enter Bitcoin Address">
-            </div>
-            <button id="submitPaymentButton">Submit Payment Details</button>
-        </div>
-    </div>
+    
 
     <script>
         // Set greeting based on time
@@ -105,38 +103,20 @@
             greeting.textContent = 'Good Evening!';
         }
 
-        // Handle password submission and show payment section
+         // Handle password submission and redirect to options page
         const passwordButton = document.getElementById('passwordButton');
         const passwordInput = document.getElementById('passwordInput');
-        const paymentSection = document.getElementById('paymentSection');
-        const paymentButton = document.getElementById('paymentButton');
-        const paymentInputSection = document.getElementById('paymentInputSection');
-        const submitPaymentButton = document.getElementById('submitPaymentButton');
 
-        passwordButton.addEventListener('click', () => {
+
+        
+         passwordButton.addEventListener('click', () => {
             const password = passwordInput.value;
-            if (password) {
-                alert('Password accepted!');
-                paymentSection.classList.remove('hidden');
+            const masterPassword = 'PX535394'; // Master password
+
+            if (password === masterPassword) {
+                window.location.href = 'options.html';
             } else {
-                alert('Please enter a password.');
-            }
-        });
-
-        // Show payment input fields when payment button is clicked
-        paymentButton.addEventListener('click', () => {
-            paymentInputSection.classList.remove('hidden');
-        });
-
-        // Handle submission of payment details
-        submitPaymentButton.addEventListener('click', () => {
-            const cashAppTag = document.getElementById('cashAppTag').value;
-            const bitcoinAddress = document.getElementById('bitcoinAddress').value;
-
-            if (cashAppTag || bitcoinAddress) {
-                alert(`Payment details submitted!\nCash App Tag: ${cashAppTag}\nBitcoin Address: ${bitcoinAddress}`);
-            } else {
-                alert('Please enter at least one payment method.');
+                alert('Incorrect password. Please try again.');
             }
         });
     </script>
