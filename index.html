@@ -10,38 +10,43 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            background-color: #1a2b4c; /* Dull navy blue */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: navy;
-            background-image: radial-gradient(circle, rgba(0,0,128,0.2) 20%, transparent 20%),
-                              radial-gradient(circle, rgba(0,0,128,0.2) 20%, transparent 20%);
-            background-size: 50px 50px;
-            background-position: 0 0, 25px 25px;
         }
 
         h1 {
             color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        
+        h1 img {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+        }
+
         h2 {
             color: #fff;
             margin: 10px 0;
         }
         
-         
         button {
             margin: 10px;
-            padding: 10px 20px;
+            padding: 12px 40px; /* Make the login button longer */
             font-size: 16px;
-            background-color: #007BFF;
+            background: linear-gradient(45deg, #007BFF, #0056b3);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,7 +59,13 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .hidden {
@@ -84,41 +95,63 @@
     <h1 id="greeting">HELLO WELCOME</h1>
      <h2>WELCOME TO PINCHAINX</h2>
 
-    <div id="passwordSection">
-        <input type="password" id="passwordInput" placeholder="Enter your password">
-        <button id="passwordButton">Submit Password</button>
+    <div id="emailSection" style="margin-bottom: 20px;">
+        <input type="email" id="emailInput" placeholder="Enter your email address">
     </div>
 
-    
+    <div id="passwordSection">
+        <input type="password" id="passwordInput" placeholder="Enter your password">
+    </div>
+
+    <div id="loginSection">
+        <button id="loginButton">Login</button>
+    </div>
 
     <script>
-        // Set greeting based on time
+        // Set greeting based on time with icons
         const greeting = document.getElementById('greeting');
         const currentHour = new Date().getHours();
+        const greetingIcon = document.createElement('img');
+
         if (currentHour < 12) {
             greeting.textContent = 'Good Morning!';
+            greetingIcon.src = 'sun.jpeg'; // Replace with the actual path to the sun icon
         } else if (currentHour < 18) {
             greeting.textContent = 'Good Afternoon!';
+            greetingIcon.src = 'sun.png'; // Replace with the actual path to the sun icon
         } else {
             greeting.textContent = 'Good Evening!';
+            greetingIcon.src = 'moon.jpeg'; // Replace with the actual path to the moon icon
         }
 
-         // Handle password submission and redirect to options page
-        const passwordButton = document.getElementById('passwordButton');
+        greeting.appendChild(greetingIcon);
+
+        const loginButton = document.getElementById('loginButton');
+        const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
 
-
-        
-         passwordButton.addEventListener('click', () => {
+        loginButton.addEventListener('click', () => {
+            const email = emailInput.value;
             const password = passwordInput.value;
             const masterPassword = 'PX535394'; // Master password
 
-            if (password === masterPassword) {
+            // Validate email domain
+            const validDomains = ['@gmail.com', '@yahoo.com', '@hotmail.com', '@icloud.com'];
+            const isValidEmail = validDomains.some(domain => email.endsWith(domain));
+
+            if (!isValidEmail) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            if (email && password === masterPassword) {
                 window.location.href = 'options.html';
             } else {
-                alert('Incorrect password. Please try again.');
+                alert('Invalid email or password. Please try again.');
             }
         });
+
+        
     </script>
 </body>
 </html>

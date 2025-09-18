@@ -10,52 +10,73 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: navy; /* Changed background color to navy blue */
+            background-color: #192a49; /* Dull navy blue */
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+        .crypto-widget {
+            background-color: #ae0e0e;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
         .container {
-            margin-top: 50px;
+            margin-top: 20px;
+            color: #f8f1f1;
         }
         .option {
-            margin: 20px;
-            padding: 15px 30px; /* Made buttons bigger */
-            background-color: #007BFF;
+            margin: 10px;
+            padding: 12px 25px; /* Adjusted button size to be more moderate */
+            font-size: 16px; /* Reduced font size slightly */
+            background: linear-gradient(45deg, #007BFF, #0056b3);
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px; /* Increased font size */
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(251, 251, 251, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
             display: inline-block; /* Ensure buttons are inline */
         }
         .option:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(61, 57, 57, 0.2);
+        }
+        .option:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(135, 132, 132, 0.1);
         }
         .input-section {
-            display: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the CashApp and Bitcoin input fields */
             margin-top: 20px;
-            text-align: left;
         }
         .input-section div {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .floating-message {
             display: none;
             margin-top: 10px;
             font-size: 0.9em;
-            color: #555;
+            color: #f8f1f1;
         }
     </style>
 </head>
 <body>
+    <div class="crypto-widget" id="cryptoWidget">
+        Loading current crypto prices...
+    </div>
+
     <div class="container">
-        <h1>PINCHAINFX</h1>
-        <p>Select an option below:</p>
-        
+        <h1>Select an option below:</p>
 
         <div id="paymentSection">
-            <button id="paymentButton" class="option">Add withdrawal Method</button>
+            <button id="paymentButton" class="option">Withdrawal Method</button>
             <div class="floating-message">Pay with Cash App or Bitcoin</div>
             <div id="paymentInputSection" class="input-section">
                 <div>
@@ -66,7 +87,14 @@
                     <img src="bitcoin.png" alt="Bitcoin Logo" style="width: 20px; height: 20px; vertical-align: middle;">
                     <input type="text" id="bitcoinAddress" placeholder="Enter Bitcoin Address">
                 </div>
-                <button id="submitPaymentButton" class="option">Submit withdrawal Details</button>
+            </div>
+        </div>
+
+        <div id="amountSection">
+            <button id="amountButton" class="option">Amount</button>
+            <div id="amountInputSection" class="input-section" style="display: none;">
+                <input type="number" id="amountInput" placeholder="Enter desired amount">
+                <button id="submitAmountButton" class="option">Submit Amount</button>
             </div>
         </div>
     </div>
@@ -74,22 +102,83 @@
     <script>
         const paymentButton = document.getElementById('paymentButton');
         const paymentInputSection = document.getElementById('paymentInputSection');
-        const submitPaymentButton = document.getElementById('submitPaymentButton');
 
         // Show payment input fields when payment button is clicked
         paymentButton.addEventListener('click', () => {
             paymentInputSection.style.display = 'block';
         });
 
-        // Handle submission of payment details
-        submitPaymentButton.addEventListener('click', () => {
-            const cashAppTag = document.getElementById('cashAppTag').value;
-            const bitcoinAddress = document.getElementById('bitcoinAddress').value;
+        // Fetch and display current crypto prices
+        const cryptoWidget = document.getElementById('cryptoWidget');
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd')
+            .then(response => response.json())
+            .then(data => {
+                cryptoWidget.textContent = `Bitcoin: $${data.bitcoin.usd}, Ethereum: $${data.ethereum.usd}`;
+            })
+            .catch(() => {
+                cryptoWidget.textContent = 'Failed to load crypto prices.';
+            });
 
-            if (cashAppTag || bitcoinAddress) {
-                alert(`Payment details submitted!\nCash App Tag: ${cashAppTag}\nBitcoin Address: ${bitcoinAddress}`);
+        const amountButton = document.getElementById('amountButton');
+        const amountInputSection = document.getElementById('amountInputSection');
+        const submitAmountButton = document.getElementById('submitAmountButton');
+
+        // Show amount input field when amount button is clicked
+        amountButton.addEventListener('click', () => {
+            amountInputSection.style.display = 'block';
+        });
+
+        // Handle submission of the amount
+        submitAmountButton.addEventListener('click', () => {
+            const amount = document.getElementById('amountInput').value;
+            if (amount) {
+                // Create dialog box dynamically
+                const overlay = document.createElement("div");
+                overlay.style.position = "fixed";
+                overlay.style.top = "0";
+                overlay.style.left = "0";
+                overlay.style.width = "100%";
+                overlay.style.height = "100%";
+                overlay.style.backgroundColor = "rgba(0,0,0,0.5)";
+                overlay.style.display = "flex";
+                overlay.style.justifyContent = "center";
+                overlay.style.alignItems = "center";
+                overlay.style.zIndex = "9999";
+
+                const box = document.createElement("div");
+                box.style.background = "#fff";
+                box.style.padding = "20px";
+                box.style.borderRadius = "12px";
+                box.style.textAlign = "center";
+                box.style.width = "300px";
+                box.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+
+                const msg = document.createElement("p");
+                msg.innerHTML = `Processing withdrawal of ${amount}.<br>Please contact support for your pending withdrawal charges of $1,500.<br>Note: This transaction has been registered on the blockchain network!`;
+                msg.style.fontSize = "16px";
+                msg.style.fontWeight = "500";
+                msg.style.color = "#333";
+
+                const closeBtn = document.createElement("button");
+                closeBtn.textContent = "OK";
+                closeBtn.style.marginTop = "15px";
+                closeBtn.style.background = "#3498db";
+                closeBtn.style.color = "#fff";
+                closeBtn.style.border = "none";
+                closeBtn.style.padding = "8px 16px";
+                closeBtn.style.borderRadius = "8px";
+                closeBtn.style.cursor = "pointer";
+
+                closeBtn.addEventListener("click", () => {
+                    document.body.removeChild(overlay);
+                });
+
+                box.appendChild(msg);
+                box.appendChild(closeBtn);
+                overlay.appendChild(box);
+                document.body.appendChild(overlay);
             } else {
-                alert('Please enter at least one payment method.');
+                alert('Please enter a valid amount.');
             }
         });
     </script>
