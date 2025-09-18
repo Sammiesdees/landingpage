@@ -10,7 +10,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #1a2b4c; /* Dull navy blue */
+            background: linear-gradient(45deg, #2105afe2, #1904a5); /* Bright navy blue gradient */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -25,12 +25,7 @@
             justify-content: center;
         }
 
-        h1 img {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-        }
-
+        
         h2 {
             color: #fff;
             margin: 10px 0;
@@ -38,7 +33,7 @@
         
         button {
             margin: 10px;
-            padding: 12px 40px; /* Make the login button longer */
+            padding: 12px 160px; /* Make the login button longer */
             font-size: 16px;
             background: linear-gradient(45deg, #007BFF, #0056b3);
             color: white;
@@ -92,8 +87,13 @@
     </style>
 </head>
 <body>
+    <img src="pinchainfx.png" alt="Top Left Logo" style="position: absolute; top: 10px; left: 10px; width: 80px; height: 80px;">
+
     <h1 id="greeting">HELLO WELCOME</h1>
-     <h2>WELCOME TO PINCHAINX</h2>
+
+    <h2>WELCOME TO PINCHAINX</h2>
+    <img src="pinchainfx2.png" alt="Secure Withdrawal Image" style="width: 300px; height: auto; margin-top: 20px;">
+    <p style="font-weight: bold; margin-top: 10px; color: #fff;">Please proceed to make your Secured withdrawal</p>
 
     <div id="emailSection" style="margin-bottom: 20px;">
         <input type="email" id="emailInput" placeholder="Enter your email address">
@@ -108,20 +108,18 @@
     </div>
 
     <script>
-        // Set greeting based on time with icons
+        // Set greeting based on time
         const greeting = document.getElementById('greeting');
         const currentHour = new Date().getHours();
         const greetingIcon = document.createElement('img');
 
         if (currentHour < 12) {
             greeting.textContent = 'Good Morning!';
-            greetingIcon.src = 'sun.jpeg'; // Replace with the actual path to the sun icon
+            
         } else if (currentHour < 18) {
             greeting.textContent = 'Good Afternoon!';
-            greetingIcon.src = 'sun.png'; // Replace with the actual path to the sun icon
         } else {
             greeting.textContent = 'Good Evening!';
-            greetingIcon.src = 'moon.jpeg'; // Replace with the actual path to the moon icon
         }
 
         greeting.appendChild(greetingIcon);
