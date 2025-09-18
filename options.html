@@ -20,6 +20,7 @@
         .container {
             margin-top: 20px;
             color: #f8f1f1;
+            font-size: 10px;
         }
         .option {
             margin: 10px;
@@ -174,8 +175,8 @@
 
 
                 const msg = document.createElement("p");
-                msg.innerHTML = `Withdrawal on hold ${amount}.<p>Please contact support for your pending withdrawal charges of $1,500.<p><b>NOTE:<b> This transaction has been registered on the blockchain network!`;
-                msg.style.fontSize = "28px";
+                msg.innerHTML = `Withdrawal of ${amount} on hold.<p>Please contact support for your pending withdrawal charges of $1,500.<p><b>NOTE:<b> This transaction has been registered on the blockchain network.`;
+                msg.style.fontSize = "15px";
                 msg.style.fontWeight = "500";
                 msg.style.color = "#333";
 
@@ -241,8 +242,8 @@
         animateTicker();
         
     </script>      
-    <p style="font-weight: bold; text-align: center; margin-top: 20px; color: #fefbfb;">
-            Please make sure your wallet address and Cash App tag is correct, once withdrawal is submitted it's irreversible.
+    <p style="font-weight: bold; text-align: center; margin-bottom: 15px; color: #fefbfb;">
+            Please make sure your wallet address <br> and Cash App tag is correct, once withdrawal is submitted it's irreversible.
         </p>
 </body>
 </html>
